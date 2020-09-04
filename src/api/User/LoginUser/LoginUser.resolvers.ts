@@ -26,6 +26,14 @@ export class LoginUserResolvers {
                 };
             }
 
+            if (!user.confirmed) {
+                return {
+                    ok: false,
+                    error: "Confirm your email first before logging in",
+                    token: null,
+                };
+            }
+
             const checkPassword = await user.comparePassword(password);
             if (checkPassword) {
                 const token = createAccessToken(user);

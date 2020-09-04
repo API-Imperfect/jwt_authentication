@@ -3,15 +3,16 @@ import "reflect-metadata";
 import { createConnection } from "typeorm";
 import express, { Application } from "express";
 import { ApolloServer } from "apollo-server-express";
-import { buildSchema, } from "type-graphql";
+import { buildSchema } from "type-graphql";
 import cors from "cors";
 import { connectionOptions } from "../ormconfig";
 import cookieParser from "cookie-parser";
 import { verify } from "jsonwebtoken";
 import { User } from "./entity/User";
 import {
-    createAccessToken, createRefreshToken,
-    sendRefreshToken
+    createAccessToken,
+    createRefreshToken,
+    sendRefreshToken,
 } from "./utils/createJWT";
 
 (async () => {
@@ -36,7 +37,7 @@ import {
 
         // token is valid and we can send back an access token
 
-        const user = await User.findOne({ id: payload.userId});
+        const user = await User.findOne({ id: payload.userId });
 
         if (!user) {
             return res.send({ ok: false, token: "" });
@@ -46,12 +47,10 @@ import {
             return res.send({ ok: false, token: "" });
         }
 
-
         sendRefreshToken(res, createRefreshToken(user));
 
         return res.send({ ok: true, token: createAccessToken(user) });
     });
-
 
     await createConnection(connectionOptions);
 
@@ -59,7 +58,7 @@ import {
         schema: await buildSchema({
             resolvers: [__dirname + "/api/**/*.resolvers.*"],
         }),
-        context: ({ res, req }) => ({ req, res })
+        context: ({ res, req }) => ({ req, res }),
     });
 
     app.use(
