@@ -7,10 +7,13 @@ import { RegistrationInput } from "./RegistrationInput";
 export class RegistrationResolvers {
     @Mutation(() => RegistrationResponse)
     async registerUser(
-        @Arg("input") { email, password }: RegistrationInput
+        @Arg("input")
+        { firstName, lastName, email, password }: RegistrationInput
     ): Promise<RegistrationResponse> {
         try {
             await User.create({
+                firstName,
+                lastName,
                 email,
                 password,
             }).save();

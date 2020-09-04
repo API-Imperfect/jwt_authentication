@@ -6,24 +6,28 @@ import {
     Entity,
     PrimaryGeneratedColumn,
 } from "typeorm";
-import { Field, ID, ObjectType } from "type-graphql";
+import { Field, ID, ObjectType, Root } from "type-graphql";
 import bcrypt from "bcryptjs";
-import { IsEmail } from "class-validator";
 
 @ObjectType()
 @Entity("users")
 export class User extends BaseEntity {
     @Field(() => ID) @PrimaryGeneratedColumn("uuid") id: string;
 
-    @Field() @IsEmail() @Column("text") email: string;
+    @Field() @Column("text") email: string;
 
+    @Field() @Column() firstName: string;
+
+    @Field() @Column() lastName: string;
     @Column("text") password: string;
-
-    @Column("int",{default:0}) tokenVersion: number;
-
+    @Column("int", { default: 0 }) tokenVersion: number;
 
     private static hashPassword(password: string): Promise<string> {
         return bcrypt.hash(password, 12);
+    }
+
+    @Field() name(@Root() parent: User): string {
+        return `${parent.firstName} ${parent.lastName}`;
     }
 
     public comparePassword(password: string): Promise<boolean> {

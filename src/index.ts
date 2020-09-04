@@ -3,7 +3,7 @@ import "reflect-metadata";
 import { createConnection } from "typeorm";
 import express, { Application } from "express";
 import { ApolloServer } from "apollo-server-express";
-import { buildSchema } from "type-graphql";
+import { buildSchema, } from "type-graphql";
 import cors from "cors";
 import { connectionOptions } from "../ormconfig";
 import cookieParser from "cookie-parser";
@@ -59,7 +59,7 @@ import {
         schema: await buildSchema({
             resolvers: [__dirname + "/api/**/*.resolvers.*"],
         }),
-        context: ({ res, req }) => ({ req, res }),
+        context: ({ res, req }) => ({ req, res })
     });
 
     app.use(
