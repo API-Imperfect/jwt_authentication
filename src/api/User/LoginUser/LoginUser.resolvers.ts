@@ -1,5 +1,4 @@
 import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
-import { RegistrationInput } from "../RegisterUser/RegistrationInput";
 import { User } from "../../../entity/User";
 import { LoginUserResponse } from "./LoginUserResponse";
 import {
@@ -8,12 +7,13 @@ import {
     sendRefreshToken,
 } from "../../../utils/createJWT";
 import { MyContext } from "../../../MyContext";
+import { LoginInput } from "./LoginInput";
 
 @Resolver()
 export class LoginUserResolvers {
     @Mutation(() => LoginUserResponse)
     async loginUser(
-        @Arg("input") { email, password }: RegistrationInput,
+        @Arg("input") { email, password }: LoginInput,
         @Ctx() { res }: MyContext
     ): Promise<LoginUserResponse> {
         try {

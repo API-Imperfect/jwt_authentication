@@ -6,7 +6,7 @@ import {
     Entity,
     PrimaryGeneratedColumn,
 } from "typeorm";
-import { Field, ID, ObjectType, Root } from "type-graphql";
+import { Field, ID, ObjectType } from "type-graphql";
 import bcrypt from "bcryptjs";
 
 @ObjectType()
@@ -19,6 +19,7 @@ export class User extends BaseEntity {
     @Field() @Column() firstName: string;
 
     @Field() @Column() lastName: string;
+
     @Column("text") password: string;
     @Column("int", { default: 0 }) tokenVersion: number;
 
@@ -26,8 +27,12 @@ export class User extends BaseEntity {
         return bcrypt.hash(password, 12);
     }
 
-    @Field() name(@Root() parent: User): string {
-        return `${parent.firstName} ${parent.lastName}`;
+    // @Field() name(@Root() parent: User): string {
+    //     return `${parent.firstName} ${parent.lastName}`;
+    // }
+
+    @Field(() => String, { nullable: true }) get fullName(): string {
+        return `${this.firstName} ${this.lastName}`;
     }
 
     public comparePassword(password: string): Promise<boolean> {

@@ -8,8 +8,10 @@ export class HelloResolvers {
     @UseMiddleware(isAuth)
     async hello(@Ctx() { payload }: MyContext) {
         console.log(payload);
-        return `Your user id is ${payload!.userId} and email is ${
+        return `Your user id is ${payload!.userId} email is ${
             payload!.email
+        }, firstName is ${payload!.firstName}, last Name is ${
+            payload!.lastName
         }`;
     }
 }

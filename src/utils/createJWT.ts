@@ -6,6 +6,8 @@ export const createAccessToken = (user: User) => {
     return jwt.sign(
         {
             userId: user.id,
+            firstName:user.firstName,
+            lastName:user.lastName,
             email:user.email
         },
         process.env.ACCESS_TOKEN!, // process.env.JWT_TOKEN || ""
@@ -18,6 +20,8 @@ export const createRefreshToken = (user: User) => {
         {
             userId: user.id,
             email:user.email,
+            firstName:user.firstName,
+            lastName:user.lastName,
             tokenVersion:user.tokenVersion
         },
         process.env.REFRESH_TOKEN!, // process.env.JWT_TOKEN || ""
